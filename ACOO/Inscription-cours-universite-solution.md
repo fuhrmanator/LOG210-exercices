@@ -107,21 +107,20 @@ Cependant, la classe qui instancie « ins :Inscription » n’est pas encore dé
 
 **Qui crée ?** (Notez que Fabrique Concrète est une solution de rechange courante.)
 Affectez à la classe B la responsabilité de créer une instance de la classe A si l'une des assertions suivantes est vraie :
-1. B **P**ossède A
-2. B **U**tilise étroitement A
-3. B **C**ontient A
-4. B **E**nregistre A
-5. B agrège A
-6. B a les données pour initialiser A
+1. B contient A
+1. B agrège A [à favoriser]
+1. B a les données pour initialiser A
+1. B enregistre A
+1. B utilise étroitement A
 
-
-Dans notre cas, la classe A est « Inscription » et nous devons décider la classe B qui va l’instancier. Alors, y a-t-il des classes dans le modèle du domaine (question 4) qui répondent à une ou à plusieurs assertions de Créateur?
+Dans notre cas, la classe A est « Inscription » et nous devons décider la classe B qui va l’instancier.
+Alors, y a-t-il des classes dans le modèle du domaine (question 4) qui répondent à une ou à plusieurs assertions de Créateur?
 
 Qui « contient » ou « agrège » ou « a les données pour initialiser » ou « enregistre » ou « utilise étroitement » Inscription?
 
-On voit dans le modèle du domaine que GrandLivre agrège/contient/enregistre des Inscriptions. Alors, il pourrait être un candidat pour le créateur. Les seules autres classes liées à Inscription sont Étudiant et GroupeCours. Étudiant agrège une inscription, mais pas de la même façon que GrandLivre. GroupeCours n’agrège pas Inscription (c’est le contraire). 
+On voit dans le modèle du domaine que Université agrège/contient/enregistre des Inscriptions. Alors, il pourrait être un candidat pour le créateur. Les seules autres classes liées à Inscription sont Étudiant et GroupeCours. Étudiant agrège une inscription, mais pas de la même façon que Université. GroupeCours n’agrège pas Inscription (c’est le contraire). 
 
-Conclusion : <s>GrandLivre</s> ControleurInscription est, selon le principe GRASP Créateur, la bonne classe pour instancier les nouvelles Inscription. On peut proposer cette partie de la RDCU, indiquée dans la figure suivante avec une annotation de notre décision :
+Conclusion : Université est, selon le principe GRASP Créateur, la bonne classe pour instancier les nouvelles Inscription. On peut proposer cette partie de la RDCU, indiquée dans la figure suivante avec une annotation de notre décision :
 
 ![](Inscription-cours-universite/CU01-RDCU-demarrerInscription-4.svg)
 
