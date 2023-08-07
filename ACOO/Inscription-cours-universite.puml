@@ -21,30 +21,33 @@ AgentAdministratif -- CU04
 top to bottom direction
 title MDD
 skinparam backgroundColor white
+skinparam style strictuml
+hide empty members
 
-package System {
-class Universite <<Organisation>>
-class Etudiant <<Role>>
+package Système {
+class Université <<Organisation>>
+class Étudiant <<Role>>
 class Inscription <<Transaction>>
 class Cours <<Description d'entité>>{
-  sigle: string
+  sigle: String
 }
-class Trimestre <<planification>>{
-  String session
-  Integer annee
-  Date debutInscription
-  Date finInscription
+class Trimestre <<Planification>>{
+  session : String
+  année : Entier
+  debutInscription : Date 
+  finInscription : Date 
 }
 class GroupeCours <<Service>>
-class Horaire <<Planification></Planification>>
-Universite "1" -- "*" Cours: Offre des formations
-Universite "1" -- "*" Etudiant: Offre des service a
-Etudiant "1" - "*" Inscription: effectue
-Inscription "1" -- "*" GroupeCours: est pour
-Cours "1" -- "*" GroupeCours: sont décrit par <
-GroupeCours "1" -- "1" Horaire: se donne selon
-GroupeCours "*" -- "1" Trimestre: s'appliquent >
-Cours "1" -- "*" Cours: est préalable >
+class Horaire <<Planification>>
+Université "1" -- "*" Cours: Offre des formations >
+Université "1" -- "*" Étudiant: Offre des service a >
+Université "1" -- "*" Inscription : Enregistre >
+Étudiant "1" - "*" Inscription: Effectue >
+Inscription "1" -- "*" GroupeCours: Est-pour >
+Cours "1" -- "*" GroupeCours: Est-enseigné-dans <
+GroupeCours "1" -- "1" Horaire: Se-donne-selon >
+GroupeCours "*" -- "1" Trimestre: À-lieu-dans >
+Cours "1" -- "*" Cours: Est-préalable-à >
 }
 @enduml
 
@@ -174,10 +177,10 @@ participant ":GestionnaireInscription" as Ctrlr
 title Réalisation de cas d'utilisation: saisirCours
 -> Ctrlr : saisirCours(cours)
 note left of Ctrlr : GRASP Contrôleur de session\n(aucun objet racine dans\nle modèle du domaine)
-Ctrlr -> ":Universite" : groupes = getGroupes(cours)
+Ctrlr -> ":Université" : groupes = getGroupes(cours)
 note right: GRASP Expert (Catalogue et\nCours serait les experts de\ncours et des groupes)
-":Universite" -> ":Map<Cours>" : c = chercher(cours)
-":Universite" -> "c:Cours" : groupes = getGroupes
+":Université" -> ":Map<Cours>" : c = chercher(cours)
+":Université" -> "c:Cours" : groupes = getGroupes
 @enduml
 
 
@@ -188,14 +191,14 @@ skinparam backgroundColor white
 skinparam style strictuml
 hide empty methods
 hide empty members
-class Universite
+class Université
 class GroupeCours {
 identificateur : String
 }
 class Cours {
 titre : String
 }
-Universite "1" - "*" Cours : répertorie >
+Université "1" - "*" Cours : répertorie >
 Cours "1" - "*" GroupeCours : est-dispensé-dans >
 @enduml
 
@@ -205,7 +208,7 @@ Cours "1" - "*" GroupeCours : est-dispensé-dans >
 @startuml CU01-RDCU-saisirCours-3
 skinparam backgroundColor white
 skinparam style strictuml
-object ":Universite" as cat
+object ":Université" as cat
 object "c1:Cours" as c1 {
   titre = "LOG121"
 }
@@ -226,7 +229,7 @@ cat -- c3
 @startuml CU01-RDCU-saisirCours-4
 skinparam backgroundColor white
 skinparam style strictuml
-object ":Universite" as cat
+object ":Université" as cat
 object "c1:Cours" as c1 {
   titre = "LOG121"
 }
@@ -253,11 +256,11 @@ participant ":Gestionnaire\nInscription" as Ctrlr
 title Réalisation de cas d'utilisation: saisirGroupeCours
 -> Ctrlr : saisirGroupeCours(groupeCours)
 note left of Ctrlr : GRASP Contrôleur de session\n(aucun objet racine dans\nle modèle du domaine)
-Ctrlr -> ":Universite" : horaire =\ngetHoraire(groupeCours)
+Ctrlr -> ":Université" : horaire =\ngetHoraire(groupeCours)
 note right: GRASP Expert (Catalogue et\nCours serait les experts de\ncours et des horaires)
-":Universite" -> ":Map<Cours>" : c =\nchercher(cours)
+":Université" -> ":Map<Cours>" : c =\nchercher(cours)
 note right: Notez que la valeur de cours\nsera décortiquée de groupeCours,\np.ex. "LOG210" de "LOG210-01"
-":Universite" -> "c:Cours" : horaire = getHoraire(groupeCours)
+":Université" -> "c:Cours" : horaire = getHoraire(groupeCours)
 note right: GRASP Expert (GroupeCours\nserait l'expert des horaires)
 "c:Cours" -> ":Map\n<GroupeCours>" : gc =\nchercher(groupe)
 "c:Cours" -> "gc:\nGroupeCours" : horaire =\ngetHoraire
@@ -274,9 +277,9 @@ title Réalisation de cas d'utilisation: ajouterGroupeCours
 -> Ctrlr : ajouterGroupeCours(groupeCours)
 note left of Ctrlr : GRASP Contrôleur de session\n(aucun objet racine dans\nle modèle du domaine)
 note left of Ctrlr : GRASP Expert justifie\ntoutes les autres méthodes\ndans ce diagramme
-Ctrlr -> ":Universite" : gc=\ngetGroupeCours\n(groupeCours)
-":Universite" -> ":Map<Cours>" : c=chercher(cours)
-":Universite" -> "c:Cours" : gc=\ngetGroupeCours(groupe)
+Ctrlr -> ":Université" : gc=\ngetGroupeCours\n(groupeCours)
+":Université" -> ":Map<Cours>" : c=chercher(cours)
+":Université" -> "c:Cours" : gc=\ngetGroupeCours(groupe)
 "c:Cours" -> ":Map\n<GroupeCours>" : gc=\nchercher\n(groupe)
 Ctrlr -> "ins:Inscription" : ajouterGroupeCours(gc)
 @enduml
